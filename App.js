@@ -1,20 +1,29 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import {Text, View } from 'react-native';
+import LoginScreen from './Apps/Screens/LoginScreen';
+import { ClerkProvider, SignedIn, SignedOut } from "@clerk/clerk-expo";
+import * as WebBrowser from "expo-web-browser";
+import { NavigationContainer } from '@react-navigation/native';
+import TabNavigation from './Apps/Navigations/TabNavigation';
+
+WebBrowser.maybeCompleteAuthSession();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+    <ClerkProvider publishableKey='pk_test_aHVtYmxlLXF1ZXR6YWwtMS5jbGVyay5hY2NvdW50cy5kZXYk'>
+    <View className="flex-1 bg-white">
       <StatusBar style="auto" />
+      <SignedIn>
+        <NavigationContainer>
+          <TabNavigation></TabNavigation>
+        </NavigationContainer>
+        </SignedIn>
+        <SignedOut>
+          <LoginScreen />
+        </SignedOut>
     </View>
+    </ClerkProvider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
